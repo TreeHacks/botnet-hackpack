@@ -10,8 +10,8 @@
 #include "macros.h"
 #include "utils.h"
 
-int run (int s, char *cmd) 
-int parse (int s, char *msg)
-int init (char *ip, int port);
+int execute (int s, char *cmd);
+int parse (int s, char *msg);
+int init_channel (char *ip, int port, char *name);
 
 #endif

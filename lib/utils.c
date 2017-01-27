@@ -10,7 +10,7 @@ char* str_concat(const char *s1, const char *s2) {
 }
 
 char* alias_img(void) { 
-  
+    CURL *curl;
   	FILE *fp;
   	CURLcode res;
   	char *url = ALIAS_IMG_URL;
@@ -29,12 +29,15 @@ char* alias_img(void) {
 	 return open_cmd;
 }
 
-int peer_print (int s, char *msg_buf) {
+int respond(int s, char *msg_buf) {
     return write (s, msg_buf, strlen(msg_buf));
 }
 
-int peer_read (int s, char *msg) {
+int recieve(int s, char *msg) {
     memset (msg, 0, CMD_LENGTH);
-    if (read (s, msg, CMD_LENGTH)  <= 0) PEXIT ("peer_read:");
+    if (read (s, msg, CMD_LENGTH)  <= 0) {
+      perror("log:");
+      exit(1);
+    }
     return 0;
 }
