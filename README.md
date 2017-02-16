@@ -1,5 +1,5 @@
 # SIMPLE C&C BOTNET
-This hackpack will walk you through implementing a basic framework that fundamentally characterizes a botnet. It might help if you've worked with C before. If you liked this tutorial, be sure to star on the repo!
+This hackpack will walk you through implementing a basic framework that fundamentally characterizes a botnet. It might help if you've worked with C before. If you liked this tutorial, be sure to star this repo!
 
 Note: Don't use anything you learn here for malevolent purposes. This hackpack is solely a case study of botnets for educational purposes. The concepts learned in this hackpack have far reaching use cases (basically anything having to do with networking). Most importantly, this hackpack is meant to be tested and deployed locally (so please don't share anything you build related to this hackpack with other hackers). Privacy is important so please respect it.
 
