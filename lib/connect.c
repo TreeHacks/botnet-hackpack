@@ -1,51 +1,58 @@
 #include "connect.h"
 
 int execute (int s, char *cmd) {
-  char line[CMD_LENGTH];
-  FILE *f = popen (cmd, "r");
+  FILE *f = //use popen to run the command locally
   if (!f) return -1;
   while (!feof (f)) {
-    char *success = fgets(line, CMD_LENGTH, f);
-    if (!success) break;
-    respond (s, line);
+    //parse through f line by line and send any output back to master
   }
   fclose(f);
   return 0;
 }
 
-int parse (int s, char *msg) {
+int parse (int s, char *msg, char* name) {
+  char *target = msg;
+
+  //check whether the msg was targetted for this client. If no, then silently drop the packet by returning 0
+
   char *cmd = strchr(msg, ':');
   if (cmd == NULL) {
     printf("Incorrect formatting. Reference: TARGET: command");
     return -1;
   }
-  cmd ++;
-  cmd[strlen(cmd) - 1] = 0;
-  printf ("Recieved command: %s\n", cmd);
+
+  //adjust the cmd pointer to the start of the actual command
+  //adjust the terminated character to the end of the command
+  //print a local statement detailing what command was recieved
+
   execute (s, cmd);
   return 0;
 }
 
 
 int init_channel (char *ip, int port, char *name) {
-	char msg[CMD_LENGTH];
-	struct sockaddr_in server;
-	int channel;
+  char msg[CMD_LENGTH];
+  struct sockaddr_in server;
 
-	server.sin_addr.s_addr = inet_addr(ip);
-	server.sin_family = AF_INET;
-  server.sin_port = htons(port);
+  server.sin_addr.s_addr = //convert the ip to network byte order
+  server.sin_family = //set the server's communications domain
+  server.sin_port = //convert port to network byte order
 
-  if((channel = socket (PF_INET, SOCK_STREAM, 0)) < 0) {
+  int channel = //define a SOCK_STREAM socket
+
+  if(channel < 0) {
     perror ("socket:");
     exit(1);
   }
-  if ((connect (channel, (struct sockaddr*) &server, sizeof(server))) < 0) {
+
+  int connection_status = //use the defined channel to connect the slave to the master server
+
+  if (connection_status < 0) {
     perror ("connect:");
     exit(1);
   }
 
-  snprintf (msg, CMD_LENGTH, "%s: This is '%s' Up and Running\n", name, name);
+  //send a greeting message back to master by loading a string into msg (hint: snprintf will come in handy)
   respond (channel, msg);
   return channel;
 }

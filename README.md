@@ -64,7 +64,7 @@ int init_channel (char *ip, int port, char *name) {
     exit(1);
   }
 
-  snprintf (msg, CMD_LENGTH, "%s: This is '%s' Up and Running\n", name, name);
+  //send a greeting message back to master by loading a string into msg (hint: snprintf will come in handy)
   respond (channel, msg);
   return channel;
 }

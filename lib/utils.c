@@ -30,12 +30,13 @@ char* alias_img(void) {
 }
 
 int respond(int s, char *msg_buf) {
-    return write (s, msg_buf, strlen(msg_buf));
+    //write the contents of msg_buf into socket s and return status
 }
 
 int recieve(int s, char *msg) {
-    memset (msg, 0, CMD_LENGTH);
-    if (read (s, msg, CMD_LENGTH)  <= 0) {
+    //reset the msg buffer
+    int read_status = //read contents of socket s into msg
+    if (read_status) {
       perror("log:");
       exit(1);
     }
