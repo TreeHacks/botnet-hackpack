@@ -18,12 +18,12 @@ This structure is characteristic of what's known as Command & Control botnets. T
 
 
 
-##Implementation
+## Implementation
 
-###Master
+### Master
 This hackpack will primarily deal with implementing the client malware. For the master server, we can use an open-source TCP server callet Netcat. Netcat has nothing to do with botnets. It's just a convienient, established tool that we can re-purpose to send text packets to an from clients (which is all a master really is). I've slightly adjusted the netcat server and compiled it to a binary called "master". No more work needed here! Our master is ready for use.
 
-###Slave
+### Slave
 Lets move on to the more interesting bit: recieving and executing remote commands (We'll worry about disguising our malware later). The goal here is to make our slave node as simple as possible and adhere to the requirements detailed above. Note that many constants have been defined in lib/macros.h so feel free to use those. All implemented function signatures can be found in either lib/connect.h or lib/utils.h. 
 
 ### 1. Initiation
